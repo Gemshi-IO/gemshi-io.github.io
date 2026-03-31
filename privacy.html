@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Privacy Policy | Gemshi Apps</title>
+  <meta name="description" content="App-specific privacy policy routing for Gemshi apps.">
+  <meta name="theme-color" content="#000000">
+  <link rel="icon" type="image/png" href="images/GemshiLogo.png">
+  <style>
+    :root {
+      --bg: #000;
+      --panel: #111;
+      --text: #fff;
+      --text-dim: #86868b;
+      --stroke: rgba(255,255,255,0.1);
+      --btn: rgba(255,255,255,0.08);
+      --btn-hover: rgba(255,255,255,0.14);
+      --accent: #fff;
+    }
+    [data-theme="light"] {
+      --bg: #f5f5f7;
+      --panel: #fff;
+      --text: #1d1d1f;
+      --text-dim: #6e6e73;
+      --stroke: rgba(0,0,0,0.12);
+      --btn: rgba(0,0,0,0.05);
+      --btn-hover: rgba(0,0,0,0.1);
+      --accent: #1d1d1f;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .wrap { max-width: 980px; margin: 0 auto; padding: 28px 18px 56px; }
+    .top { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 24px; }
+    .back, .theme-toggle, .app-btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      min-height: 42px; padding: 0 14px; border-radius: 999px;
+      border: 1px solid var(--stroke); background: var(--btn); color: var(--text); text-decoration: none;
+      font-size: 0.92rem; font-weight: 600;
+    }
+    .back:hover, .theme-toggle:hover, .app-btn:hover { background: var(--btn-hover); }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--stroke);
+      border-radius: 20px;
+      padding: 24px;
+      margin-bottom: 16px;
+    }
+    h1 { margin: 0 0 10px; font-size: clamp(1.6rem, 4vw, 2.5rem); }
+    p { margin: 0 0 14px; color: var(--text-dim); line-height: 1.6; }
+    .apps { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; margin-top: 12px; }
+    .app-btn.active { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+    .app-btn {
+      justify-content: flex-start;
+      padding: 8px 12px;
+      min-height: 52px;
+    }
+    .app-logo {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      object-fit: cover;
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,0.05);
+      flex: 0 0 28px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <a class="back" href="index.html">Back to Apps</a>
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle color theme">
+        <span id="theme-icon" aria-hidden="true">☾</span>
+        <span id="theme-text">Dark</span>
+      </button>
+    </div>
+
+    <section class="card">
+      <h1>Privacy Policy</h1>
+      <p>Each app has its own privacy policy. Pick an app below to open its privacy page directly.</p>
+      <div class="apps" id="app-list"></div>
+    </section>
+  </div>
+
+  <script>
+    const root = document.documentElement;
+    const themeBtn = document.getElementById("theme-toggle");
+    const themeIcon = document.getElementById("theme-icon");
+    const themeText = document.getElementById("theme-text");
+    const storageKey = "gemshi-theme";
+    function applyTheme(theme) {
+      root.setAttribute("data-theme", theme);
+      const isLight = theme === "light";
+      if (themeText) themeText.textContent = isLight ? "Light" : "Dark";
+      if (themeIcon) themeIcon.textContent = isLight ? "☀" : "☾";
+    }
+    const stored = localStorage.getItem(storageKey);
+    const prefersLight = window.matchMedia("(prefers-color-scheme: light)").matches;
+    applyTheme(stored || (prefersLight ? "light" : "dark"));
+    themeBtn.addEventListener("click", function () {
+      const next = root.getAttribute("data-theme") === "light" ? "dark" : "light";
+      applyTheme(next);
+      localStorage.setItem(storageKey, next);
+    });
+
+    const apps = {
+      countit: { label: "CountIt", privacyUrl: "/Countit/privacy.html", logo: "CountitLogo.png" },
+      maplet: { label: "Maplet", privacyUrl: "/Maplet/privacy.html", logo: "MapletLogo.png" },
+      dday: { label: "D Day", privacyUrl: "/DDay/privacy.html", logo: "DDayLogo.jpeg" },
+      docuchat: { label: "DocuChat", privacyUrl: "/DocuChat/privacy.html", logo: "DocuChatLogo.png" },
+      cratecrashers: { label: "Crate Crashers", privacyUrl: "/CrateCrashers/privacy.html", logo: "CrateCrashersLogo.png" }
+    };
+
+    const params = new URLSearchParams(window.location.search);
+    let active = params.get("app");
+    if (!active || !apps[active]) active = "countit";
+
+    const list = document.getElementById("app-list");
+
+    function renderButtons() {
+      list.innerHTML = "";
+      Object.keys(apps).forEach(function (key) {
+        const item = document.createElement("a");
+        item.className = "app-btn" + (key === active ? " active" : "");
+        item.href = apps[key].privacyUrl;
+        item.setAttribute("aria-label", "Open " + apps[key].label + " privacy policy");
+        const logo = document.createElement("img");
+        logo.className = "app-logo";
+        logo.src = apps[key].logo;
+        logo.alt = apps[key].label + " logo";
+        logo.width = 28;
+        logo.height = 28;
+        logo.loading = "lazy";
+        item.appendChild(logo);
+        item.appendChild(document.createTextNode(apps[key].label));
+        list.appendChild(item);
+      });
+    }
+    renderButtons();
+  </script>
+</body>
+</html>
