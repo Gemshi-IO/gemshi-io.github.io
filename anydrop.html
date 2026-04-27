@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AnyDrop | Gemshi</title>
+  <meta name="description" content="AnyDrop is a premium cross-platform web app for peer-to-peer file sharing, encrypted chat, and universal clipboard workflows.">
+  <meta name="theme-color" content="#000000">
+  <link rel="icon" type="image/png" href="images/favicon.png">
+  <style>
+    :root {
+      --bg: #000;
+      --panel: #111;
+      --panel-soft: #0b0b0b;
+      --stroke: rgba(255, 255, 255, 0.1);
+      --text: #fff;
+      --text-dim: #86868b;
+      --shadow: 0 24px 64px rgba(0, 0, 0, 0.45);
+      --btn-soft: rgba(255, 255, 255, 0.08);
+      --btn-soft-hover: rgba(255, 255, 255, 0.14);
+      --glow: 0 0 0 1px rgba(255,255,255,0.2), 0 10px 34px rgba(150, 190, 255, 0.26);
+    }
+
+    [data-theme="light"] {
+      --bg: #f5f5f7;
+      --panel: #fff;
+      --panel-soft: #f0f1f4;
+      --stroke: rgba(0, 0, 0, 0.12);
+      --text: #1d1d1f;
+      --text-dim: #6e6e73;
+      --shadow: 0 18px 44px rgba(0, 0, 0, 0.1);
+      --btn-soft: rgba(0, 0, 0, 0.05);
+      --btn-soft-hover: rgba(0, 0, 0, 0.1);
+      --glow: 0 0 0 1px rgba(0,0,0,0.16), 0 8px 28px rgba(59, 90, 168, 0.2);
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 0 18px; }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(12px);
+      background: color-mix(in srgb, var(--bg) 78%, transparent);
+      border-bottom: 1px solid var(--stroke);
+    }
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+    .brand img {
+      width: 26px;
+      height: 26px;
+      border-radius: 7px;
+      border: 1px solid var(--stroke);
+      padding: 2px;
+      background: var(--panel-soft);
+    }
+    .logo-dark { display: inline-block; }
+    .logo-light { display: none; }
+    [data-theme="light"] .logo-dark { display: none; }
+    [data-theme="light"] .logo-light { display: inline-block; }
+
+    .nav-actions { display: flex; align-items: center; gap: 10px; }
+
+    .btn, .theme-toggle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 42px;
+      padding: 0 14px;
+      border-radius: 999px;
+      border: 1px solid var(--stroke);
+      background: var(--btn-soft);
+      color: var(--text);
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: transform 180ms ease, background-color 180ms ease;
+    }
+    .btn:hover, .theme-toggle:hover {
+      transform: translateY(-1px);
+      background: var(--btn-soft-hover);
+    }
+
+    .hero {
+      text-align: center;
+      padding: clamp(52px, 9vw, 110px) 0 24px;
+    }
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(2rem, 6vw, 4.1rem);
+      line-height: 1.07;
+      letter-spacing: -0.03em;
+      background: linear-gradient(100deg, #ffffff 8%, #b7bcc7 92%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    [data-theme="light"] .hero h1 {
+      background: linear-gradient(100deg, #111111 8%, #4f5563 92%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .hero p {
+      max-width: 780px;
+      margin: 16px auto 0;
+      color: var(--text-dim);
+      font-size: clamp(1rem, 1.4vw, 1.2rem);
+    }
+    .hero-cta {
+      margin-top: 24px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      background: #0d0d0f;
+      color: #fff;
+      border-color: rgba(255,255,255,0.26);
+      box-shadow: var(--glow);
+      font-weight: 700;
+    }
+    .hero-shot {
+      position: relative;
+      margin: clamp(26px, 4vw, 40px) auto 0;
+      width: min(1020px, 95%);
+      aspect-ratio: 16 / 9;
+      border-radius: 22px;
+      overflow: hidden;
+      border: 1px solid var(--stroke);
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      transform: perspective(1200px) rotateX(4deg) rotateZ(-1.2deg);
+    }
+    .hero-shot img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .section-title {
+      margin: clamp(58px, 8vw, 90px) 0 16px;
+      font-size: clamp(1.4rem, 3.1vw, 2.1rem);
+      letter-spacing: -0.02em;
+    }
+    .bento {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .card {
+      min-width: 0;
+      border: 1px solid var(--stroke);
+      border-radius: 18px;
+      background: var(--panel);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    /* Ratio lives on the frame so image pixel size never fights layout */
+    .card-media {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      background: var(--panel-soft);
+    }
+    .card.tall .card-media { aspect-ratio: 4 / 5; }
+    .card.wide .card-media { aspect-ratio: 21 / 9; }
+    .card-media img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      object-position: center;
+    }
+    .card-copy { padding: 14px; }
+    .card h3 { margin: 0 0 6px; font-size: 1.02rem; letter-spacing: -0.01em; }
+    .card p { margin: 0; color: var(--text-dim); font-size: 0.93rem; line-height: 1.55; }
+    .span-2 { grid-column: span 2; }
+
+    .under-hood {
+      margin-top: clamp(54px, 8vw, 88px);
+      border: 1px solid var(--stroke);
+      border-radius: 18px;
+      background: var(--panel-soft);
+      padding: 18px;
+    }
+    .under-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .under-item h4 { margin: 0 0 7px; font-size: 1rem; }
+    .under-item p { margin: 0; color: var(--text-dim); font-size: 0.92rem; }
+
+    .faq {
+      margin-top: clamp(44px, 7vw, 78px);
+    }
+    .faq-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .faq-item {
+      border: 1px solid var(--stroke);
+      background: var(--panel);
+      border-radius: 16px;
+      padding: 14px;
+    }
+    .faq-item h4 {
+      margin: 0 0 7px;
+      font-size: 1rem;
+      letter-spacing: -0.01em;
+    }
+    .faq-item p {
+      margin: 0;
+      color: var(--text-dim);
+      font-size: 0.92rem;
+      line-height: 1.55;
+    }
+
+    .footer {
+      margin-top: clamp(50px, 8vw, 86px);
+      padding: 18px 0 34px;
+      border-top: 1px solid var(--stroke);
+      text-align: center;
+      color: var(--text-dim);
+    }
+    .footer-links {
+      margin: 10px 0 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .footer-brand {
+      display: flex;
+      justify-content: center;
+      margin: 18px 0 0;
+    }
+    .footer-brand img {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      border: 1px solid var(--stroke);
+      padding: 2px;
+      background: var(--panel-soft);
+    }
+
+    @media (max-width: 960px) {
+      .bento { grid-template-columns: 1fr 1fr; }
+      .under-grid { grid-template-columns: 1fr; }
+      .faq-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 700px) {
+      .bento { grid-template-columns: 1fr; }
+      .span-2 { grid-column: span 1; }
+      .hero-shot { transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="index.html">
+        <img class="logo-dark" src="images/GemshiLogoDark.png" alt="Gemshi logo" width="26" height="26" loading="lazy">
+        <img class="logo-light" src="images/GemshiLogoLight.png" alt="Gemshi logo" width="26" height="26" loading="lazy">
+        <span>Gemshi</span>
+      </a>
+      <div class="nav-actions">
+        <a class="btn" href="index.html">Portfolio Home</a>
+        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle color theme">
+          <span id="theme-icon" aria-hidden="true">☾</span>
+          <span id="theme-text">Dark</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <h1>Share anything, with anyone, instantly.</h1>
+      <p>Move files instantly between Mac, PC, iOS, and Android. No apps to install, no accounts to create, no cloud uploads and 100% free. Just open the site and drop.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="https://www.anydrop.org/" target="_blank" rel="noopener noreferrer">Launch Webapp</a>
+        <a class="btn" href="#faq">FAQ</a>
+      </div>
+      <figure class="hero-shot">
+        <img src="images/AnyDropHero.webp" alt="AnyDrop connect page preview" width="1200" height="675" loading="eager" fetchpriority="high">
+      </figure>
+    </section>
+
+    <h2 class="section-title">Feature Highlights</h2>
+    <section class="bento">
+      <article class="card span-2">
+        <div class="card-media"><img src="images/AnyDropBentoLocal.webp" alt="AnyDrop local network discovery interface" loading="lazy" decoding="async"></div>
+        <div class="card-copy">
+          <h3>Frictionless Local Discovery.</h3>
+          <p>Open the app on the same Wi-Fi, and your devices instantly see each other. No pairing required.</p>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-media"><img src="images/AnyDropBentoMagicLink.webp" alt="AnyDrop magic link cross-network connection" loading="lazy" decoding="async"></div>
+        <div class="card-copy">
+          <h3>Magic Links.</h3>
+          <p>Not on the same network? Generate a secure Magic Link to bridge devices across the internet via WebRTC.</p>
+        </div>
+      </article>
+
+      <article class="card tall">
+        <div class="card-media"><img src="images/AnyDropBentoChat.webp" alt="AnyDrop encrypted peer-to-peer chat interface" loading="lazy" decoding="async"></div>
+        <div class="card-copy">
+          <h3>Real-time Encrypted Chat.</h3>
+          <p>Send text, links, and files directly through an encrypted peer-to-peer socket. Your data never touches a database.</p>
+        </div>
+      </article>
+
+      <article class="card wide span-2">
+        <div class="card-media"><img src="images/AnyDropBentoClipboard.webp" alt="AnyDrop notes and clipboard staging interface" loading="lazy" decoding="async"></div>
+        <div class="card-copy">
+          <h3>Your Universal Clipboard.</h3>
+          <p>Seamlessly push text snippets, URLs, and notes between your phone and desktop as if they were a single device.</p>
+        </div>
+      </article>
+    </section>
+
+    <section id="under-the-hood" class="under-hood">
+      <div class="under-grid">
+        <article class="under-item">
+          <h4>Architecture</h4>
+          <p>WebRTC &amp; WebSockets for seamless NAT traversal and fallback routing.</p>
+        </article>
+        <article class="under-item">
+          <h4>Privacy</h4>
+          <p>100% End-to-End Encrypted. Data exists only in RAM and evaporates when you close the tab.</p>
+        </article>
+        <article class="under-item">
+          <h4>Performance</h4>
+          <p>Built as a lightweight SPA with vanilla JavaScript and dynamic DOM management.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="faq" class="faq">
+      <h2 class="section-title">Help &amp; FAQs</h2>
+      <div class="faq-grid">
+        <article class="faq-item">
+          <h4>Do files or chats get stored in the cloud?</h4>
+          <p>No. Transfers and chat traffic move directly between peers. Relay services are only used for connection setup or fallback routing, not long-term storage.</p>
+        </article>
+        <article class="faq-item">
+          <h4>How do I connect devices quickly?</h4>
+          <p>On the same Wi-Fi, devices auto-discover instantly. Across networks, generate a Magic Link or QR to create a trusted temporary bridge.</p>
+        </article>
+        <article class="faq-item">
+          <h4>What are practical file size limits?</h4>
+          <p>Local peer-to-peer transfers are typically only limited by your network. Remote relay paths can be capped for stability, and iOS Safari works best with moderate file sizes.</p>
+        </article>
+        <article class="faq-item">
+          <h4>What happens if a transfer is canceled?</h4>
+          <p>In-flight data is held in temporary memory. Canceling tears down the session and drops partial data, leaving no half-written files behind.</p>
+        </article>
+        <article class="faq-item">
+          <h4>Where is a received file before download?</h4>
+          <p>For browser security, completed files stay in temporary memory until you explicitly tap Download. Closing the tab before download removes that temporary copy.</p>
+        </article>
+        <article class="faq-item">
+          <h4>Is AnyDrop safe on public Wi-Fi?</h4>
+          <p>Yes. Traffic remains encrypted in transit, and Invisible Mode helps hide your device from unpaired users on shared networks.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer-links">
+        <a class="btn" href="index.html">Portfolio Home</a>
+        <a class="btn btn-primary" href="https://www.anydrop.org/" target="_blank" rel="noopener noreferrer">Launch AnyDrop</a>
+      </div>
+      <div class="footer-brand" aria-label="Gemshi">
+        <img class="logo-dark" src="images/GemshiLogoDark.png" alt="Gemshi" width="32" height="32" loading="lazy">
+        <img class="logo-light" src="images/GemshiLogoLight.png" alt="Gemshi" width="32" height="32" loading="lazy">
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const root = document.documentElement;
+    const storageKey = "gemshi-theme";
+    const toggle = document.getElementById("theme-toggle");
+    const themeText = document.getElementById("theme-text");
+    const themeIcon = document.getElementById("theme-icon");
+
+    function applyTheme(theme) {
+      root.setAttribute("data-theme", theme);
+      const isLight = theme === "light";
+      if (themeText) themeText.textContent = isLight ? "Light" : "Dark";
+      if (themeIcon) themeIcon.textContent = isLight ? "☀" : "☾";
+    }
+
+    const storedTheme = localStorage.getItem(storageKey);
+    const preferredTheme = window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+    applyTheme(storedTheme || preferredTheme);
+
+    if (toggle) {
+      toggle.addEventListener("click", function () {
+        const nextTheme = root.getAttribute("data-theme") === "light" ? "dark" : "light";
+        applyTheme(nextTheme);
+        localStorage.setItem(storageKey, nextTheme);
+      });
+    }
+  </script>
+</body>
+</html>
