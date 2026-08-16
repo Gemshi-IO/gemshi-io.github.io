@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Page not found · Gemshi</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <script>
+    (function () {
+      var path = window.location.pathname || "";
+      // Catch /maplet and /Maplet (and any subpath) that didn't hit the project site.
+      if (!/^\/maplet/i.test(path)) return;
+
+      var rest = path.replace(/^\/maplet/i, "") || "/";
+      var map = {
+        "/": "/",
+        "/index.html": "/",
+        "/privacy-policy.html": "/privacy",
+        "/privacy-policy": "/privacy",
+        "/eula.html": "/terms",
+        "/eula": "/terms",
+        "/help.html": "/support",
+        "/help": "/support",
+        "/userguide.md": "/support",
+        "/UserGuide.md": "/support"
+      };
+      var key = rest.replace(/\/$/, "") || "/";
+      var destPath = map[rest] || map[key] || map[key.toLowerCase()] || "/";
+      if (/[?&]data=/.test(window.location.search)) {
+        destPath = "/share";
+      }
+      window.location.replace("https://maplet.net" + destPath + window.location.search + window.location.hash);
+    })();
+  </script>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; margin: 3rem auto; max-width: 36rem; padding: 0 1.25rem; color: #1f2937; line-height: 1.5; }
+    a { color: #0f766e; }
+  </style>
+</head>
+<body>
+  <h1>Page not found</h1>
+  <p>That page isn’t on gemshi.com. If you were looking for Maplet, it’s now at <a href="https://maplet.net/">maplet.net</a>.</p>
+  <p><a href="/">Back to Gemshi</a></p>
+</body>
+</html>
