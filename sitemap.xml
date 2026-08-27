@@ -17,6 +17,13 @@
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
+
+  <url>
+    <loc>https://gemshi.com/HomeCompass/</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
   
   <url>
     <loc>https://gemshi.com/DDay/</loc>
