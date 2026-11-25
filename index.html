@@ -17,8 +17,18 @@
     gtag('config', 'G-0750K9G1T6');
   </script>
   <meta property="og:title" content="Gemshi Apps | Premium, Privacy-First App Experiences">
-  <meta property="og:description" content="A premium showcase of native iOS experiences, built for privacy and performance.">
+  <meta property="og:description" content="A premium showcase of native iOS and web experiences, built for privacy and performance.">
   <meta property="og:type" content="website">
+  <meta property="og:url" content="https://gemshi.com/">
+  <meta property="og:site_name" content="Gemshi">
+  <meta property="og:image" content="https://gemshi.com/images/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Gemshi: Beautifully Crafted Apps. Private by Design. Icons for Clutch, CountIt, Maplet, Roamy, Next Big Day, DocuChat, Crate Crashers and AnyDrop.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Gemshi Apps | Premium, Privacy-First App Experiences">
+  <meta name="twitter:description" content="A premium showcase of native iOS and web experiences, built for privacy and performance.">
+  <meta name="twitter:image" content="https://gemshi.com/images/og-image.jpg">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -278,6 +288,66 @@
     .hero-showcase img:nth-child(2) { height: 108%; }
     .hero-showcase img:not(:nth-child(2)) { height: 88%; }
 
+    .app-index {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 0 20px clamp(32px, 6vw, 64px);
+    }
+    .app-index ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      grid-template-columns: repeat(8, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .app-index-item {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 6px 12px;
+      border-radius: 18px;
+      border: 1px solid transparent;
+      color: var(--text-dim);
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-align: center;
+      line-height: 1.25;
+      transition: transform 180ms ease, background-color 180ms ease, border-color 180ms ease, color 180ms ease;
+    }
+    .app-index-item img {
+      width: 64px;
+      height: 64px;
+      border-radius: 15px;
+      object-fit: cover;
+      border: 1px solid var(--logo-stroke);
+      background: var(--logo-bg);
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.28);
+    }
+    .app-index-item:hover, .app-index-item:focus-visible {
+      transform: translateY(-3px);
+      background: var(--cta-secondary-bg);
+      border-color: var(--stroke);
+      color: var(--text);
+      outline: none;
+    }
+    .app-index-badge {
+      position: absolute;
+      top: 6px;
+      right: 50%;
+      transform: translateX(44px);
+      padding: 1px 7px;
+      border-radius: 999px;
+      background: var(--text);
+      color: var(--bg);
+      font-size: 0.66rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+    .app-section { scroll-margin-top: 64px; }
+
     .cta-row {
       margin-top: 0;
       display: flex;
@@ -517,6 +587,10 @@
       line-height: 1.6;
     }
 
+    @media (max-width: 960px) and (min-width: 769px) {
+      .app-index ul { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    }
+
     @media (max-width: 768px) {
       .nav { padding: 12px 16px; }
       .nav-links { gap: 14px; font-size: 0.9rem; }
@@ -536,6 +610,11 @@
       .footer-wrap { padding: 20px 16px; }
       .core-values { padding: 34px 14px 22px; }
       .core-values-grid { grid-template-columns: 1fr; }
+      .app-index { padding: 0 14px 28px; }
+      .app-index ul { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+      .app-index-item { padding: 10px 2px; font-size: 0.78rem; gap: 8px; }
+      .app-index-item img { width: 56px; height: 56px; border-radius: 13px; }
+      .app-index-badge { transform: translateX(38px); }
     }
   </style>
 </head>
@@ -564,7 +643,44 @@
       <p>Discover premium iOS and web experiences designed with privacy-first principles, fast performance, and intentional simplicity at every touchpoint.</p>
     </section>
 
-    <section id="apps" class="app-section" aria-labelledby="clutch-title" data-app="clutch">
+    <nav id="apps" class="app-index" aria-label="All apps">
+      <ul>
+        <li><a class="app-index-item" href="#app-clutch">
+          <img src="images/ClutchLogo.svg" alt="" width="64" height="64" decoding="async">
+          <span class="app-index-name">Clutch</span><span class="app-index-badge">New</span>
+        </a></li>
+        <li><a class="app-index-item" href="#app-countit">
+          <img src="images/CountitLogo.webp" alt="" width="64" height="64" decoding="async">
+          <span class="app-index-name">CountIt</span>
+        </a></li>
+        <li><a class="app-index-item" href="#app-maplet">
+          <img src="images/MapletLogo.webp" alt="" width="64" height="64" decoding="async">
+          <span class="app-index-name">Maplet</span>
+        </a></li>
+        <li><a class="app-index-item" href="#app-roamy">
+          <img src="images/RoamyIcon.webp" alt="" width="64" height="64" decoding="async">
+          <span class="app-index-name">Roamy</span>
+        </a></li>
+        <li><a class="app-index-item" href="#app-dday">
+          <img src="images/DDayLogo.webp" alt="" width="64" height="64" decoding="async">
+          <span class="app-index-name">Next Big Day</span>
+        </a></li>
+        <li><a class="app-index-item" href="#app-docuchat">
+          <img src="images/DocuChatLogo.webp" alt="" width="64" height="64" decoding="async">
+          <span class="app-index-name">DocuChat</span>
+        </a></li>
+        <li><a class="app-index-item" href="#app-cratecrashers">
+          <img src="images/CrateCrashersLogo.webp" alt="" width="64" height="64" decoding="async">
+          <span class="app-index-name">Crate Crashers</span>
+        </a></li>
+        <li><a class="app-index-item" href="#app-anydrop">
+          <img src="images/AnydropIcon.webp" alt="" width="64" height="64" decoding="async">
+          <span class="app-index-name">AnyDrop</span><span class="app-index-badge">Web</span>
+        </a></li>
+      </ul>
+    </nav>
+
+    <section id="app-clutch" class="app-section" aria-labelledby="clutch-title" data-app="clutch">
       <div class="app-wrap">
         <div class="text-block">
           <div class="app-brand">
@@ -591,7 +707,7 @@
       </div>
     </section>
 
-    <section class="app-section" aria-labelledby="countit-title" data-app="countit">
+    <section id="app-countit" class="app-section" aria-labelledby="countit-title" data-app="countit">
       <div class="app-wrap">
         <div class="text-block">
           <div class="app-brand">
@@ -620,7 +736,7 @@
       </div>
     </section>
 
-    <section class="app-section" aria-labelledby="maplet-title" data-app="maplet">
+    <section id="app-maplet" class="app-section" aria-labelledby="maplet-title" data-app="maplet">
       <div class="app-wrap">
         <div class="text-block">
           <div class="app-brand">
@@ -649,7 +765,7 @@
       </div>
     </section>
 
-    <section class="app-section" aria-labelledby="roamy-title" data-app="roamy">
+    <section id="app-roamy" class="app-section" aria-labelledby="roamy-title" data-app="roamy">
       <div class="app-wrap">
         <div class="text-block">
           <div class="app-brand">
@@ -674,7 +790,7 @@
       </div>
     </section>
 
-    <section class="app-section" aria-labelledby="daysleft-title" data-app="dday">
+    <section id="app-dday" class="app-section" aria-labelledby="daysleft-title" data-app="dday">
       <div class="app-wrap">
         <div class="text-block">
           <div class="app-brand">
@@ -703,7 +819,7 @@
       </div>
     </section>
 
-    <section class="app-section" aria-labelledby="docuchat-title" data-app="docuchat">
+    <section id="app-docuchat" class="app-section" aria-labelledby="docuchat-title" data-app="docuchat">
       <div class="app-wrap">
         <div class="text-block">
           <div class="app-brand">
@@ -732,7 +848,7 @@
       </div>
     </section>
 
-    <section class="app-section" aria-labelledby="crate-title" data-app="cratecrashers">
+    <section id="app-cratecrashers" class="app-section" aria-labelledby="crate-title" data-app="cratecrashers">
       <div class="app-wrap">
         <div class="text-block">
           <div class="app-brand">
@@ -761,7 +877,7 @@
       </div>
     </section>
 
-    <section class="app-section" aria-labelledby="anydrop-title" data-app="anydrop">
+    <section id="app-anydrop" class="app-section" aria-labelledby="anydrop-title" data-app="anydrop">
       <div class="app-wrap">
         <div class="text-block">
           <div class="app-brand">
@@ -801,8 +917,8 @@
         <p>Selected experiences like AnyDrop are built as secure web apps so file sharing, notes, snippets, and messaging work seamlessly across iOS, Android, Windows, and macOS.</p>
       </article>
       <article class="core-item">
-        <h3>Absolute Privacy</h3>
-        <p>Zero accounts. Zero tracking. Zero ads. Your data stays completely on your device and inside your personal iCloud.</p>
+        <h3>Privacy First</h3>
+        <p>No accounts required. Your data stays on your device or in your own private iCloud, never on our servers and never sold. Some free apps are supported by ads.</p>
       </article>
       <article class="core-item">
         <h3>Intentional Design</h3>
